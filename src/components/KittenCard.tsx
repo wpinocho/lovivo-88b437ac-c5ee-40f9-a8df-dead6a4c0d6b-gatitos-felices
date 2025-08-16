@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Heart, ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import type { Kitten } from "@/pages/Index";
+import { Heart, Star } from "lucide-react";
+import { Kitten } from "@/pages/Index";
 
 interface KittenCardProps {
   kitten: Kitten;
@@ -10,77 +8,58 @@ interface KittenCardProps {
 }
 
 export const KittenCard = ({ kitten, onAddToCart }: KittenCardProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-  
   console.log("Renderizando tarjeta para gatito:", kitten.name);
 
-  const handleAddToCart = () => {
-    console.log("Botón agregar al carrito clickeado para:", kitten.name);
-    onAddToCart(kitten);
-  };
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    console.log("Gatito", kitten.name, isLiked ? "ya no es favorito" : "marcado como favorito");
-  };
-
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <div className="relative">
-        <img
-          src={kitten.image}
+        <img 
+          src={kitten.image} 
           alt={kitten.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-64 object-cover"
         />
-        <button
-          onClick={handleLike}
-          className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-pink-50 transition-colors"
-        >
-          <Heart
-            className={`w-5 h-5 ${
-              isLiked ? "fill-pink-500 text-pink-500" : "text-gray-400"
-            }`}
-          />
-        </button>
-        <div className="absolute top-3 left-3">
-          <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-            {kitten.age}
-          </Badge>
+        <div className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-lg">
+          <Heart className="w-5 h-5 text-gray-400 hover:text-red-500 cursor-pointer transition-colors" />
+        </div>
+        <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full">
+          <span className="text-sm font-medium text-purple-600">{kitten.age}</span>
         </div>
       </div>
       
       <div className="p-6">
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-3">
           <h3 className="text-xl font-bold text-gray-800">{kitten.name}</h3>
-          <span className="text-2xl font-bold text-purple-600">
-            ${kitten.price}
-          </span>
+          <div className="flex items-center space-x-1">
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+            <span className="text-sm text-gray-600">5.0</span>
+          </div>
         </div>
         
-        <p className="text-gray-600 mb-1">{kitten.breed}</p>
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-          {kitten.description}
-        </p>
+        <p className="text-purple-600 font-medium mb-2">{kitten.breed}</p>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{kitten.description}</p>
         
-        <div className="flex flex-wrap gap-1 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4">
           {kitten.personality.map((trait, index) => (
-            <Badge
+            <span 
               key={index}
-              variant="outline"
-              className="text-xs border-pink-200 text-pink-700"
+              className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full"
             >
               {trait}
-            </Badge>
+            </span>
           ))}
         </div>
         
-        <Button
-          onClick={handleAddToCart}
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-        >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Adoptar
-        </Button>
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-bold text-gray-800">
+            ${kitten.price.toLocaleString()}
+          </div>
+          <Button 
+            onClick={() => onAddToCart(kitten)}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            Adoptar
+          </Button>
+        </div>
       </div>
     </div>
   );

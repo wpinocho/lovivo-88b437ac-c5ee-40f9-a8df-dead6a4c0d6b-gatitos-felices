@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Header } from "@/components/Header";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/Hero";
 import { KittenCard } from "@/components/KittenCard";
 import { Cart } from "@/components/Cart";
-import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import AboutUs from "@/components/AboutUs";
+import Contact from "@/components/Contact";
 
 export interface Kitten {
   id: number;
@@ -87,7 +88,7 @@ const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  console.log("Tienda de gatitos cargada con", kittens.length, "gatitos disponibles");
+  console.log("Tienda de gatitos profesional cargada con", kittens.length, "gatitos disponibles");
   console.log("Items en carrito:", cartItems.length);
 
   const addToCart = (kitten: Kitten) => {
@@ -132,44 +133,83 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-      <Header />
+    <div className="min-h-screen bg-white">
+      <Navigation 
+        cartItemsCount={getTotalItems()}
+        onCartClick={() => setIsCartOpen(true)}
+      />
       
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
-              🐱 Tienda de Gatitos
-            </h1>
-            <p className="text-gray-600">
-              Encuentra tu compañero felino perfecto
+      <Hero />
+      
+      {/* Kittens Section */}
+      <section id="kittens" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Nuestros Gatitos Disponibles
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Cada uno de nuestros gatitos ha sido criado con amor y está listo para encontrar su hogar perfecto
             </p>
           </div>
-          
-          <Button
-            onClick={() => setIsCartOpen(true)}
-            className="relative bg-purple-600 hover:bg-purple-700"
-          >
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            Carrito
-            {getTotalItems() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                {getTotalItems()}
-              </span>
-            )}
-          </Button>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {kittens.map((kitten) => (
-            <KittenCard
-              key={kitten.id}
-              kitten={kitten}
-              onAddToCart={addToCart}
-            />
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {kittens.map((kitten) => (
+              <KittenCard
+                key={kitten.id}
+                kitten={kitten}
+                onAddToCart={addToCart}
+              />
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      <AboutUs />
+      <Contact />
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">Gatitos Felices</h3>
+              <p className="text-gray-300">
+                Criando gatitos con amor desde 2008. Tu compañero perfecto te está esperando.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Enlaces</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="#home" className="hover:text-white">Inicio</a></li>
+                <li><a href="#kittens" className="hover:text-white">Gatitos</a></li>
+                <li><a href="#about" className="hover:text-white">Sobre Nosotros</a></li>
+                <li><a href="#contact" className="hover:text-white">Contacto</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Servicios</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li>Adopción de Gatitos</li>
+                <li>Certificados de Salud</li>
+                <li>Asesoría Post-Adopción</li>
+                <li>Garantía de Bienestar</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Contacto</h4>
+              <div className="space-y-2 text-gray-300">
+                <p>+52 55 1234 5678</p>
+                <p>info@gatitosfelices.com</p>
+                <p>Ciudad de México, CDMX</p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+            <p>&copy; 2024 Gatitos Felices. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </footer>
 
       <Cart
         isOpen={isCartOpen}
